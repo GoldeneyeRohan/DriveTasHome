@@ -33,27 +33,6 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 ======================================================================
 """
 
-"""
-Convert solution with path and dropoff_mapping in terms of indices
-and write solution output in terms of names to path_to_file + file_number + '.out'
-"""
-def convertToFile(path, dropoff_mapping, path_to_file, list_locs):
-    string = ''
-    for node in path:
-        string += list_locs[node] + ' '
-    string = string.strip()
-    string += '\n'
-
-    dropoffNumber = len(dropoff_mapping.keys())
-    string += str(dropoffNumber) + '\n'
-    for dropoff in dropoff_mapping.keys():
-        strDrop = list_locs[dropoff] + ' '
-        for node in dropoff_mapping[dropoff]:
-            strDrop += list_locs[node] + ' '
-        strDrop = strDrop.strip()
-        strDrop += '\n'
-        string += strDrop
-    utils.write_to_file(path_to_file, string)
 
 def solve_from_file(input_file, output_directory, params=[]):
     print('Processing', input_file)

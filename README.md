@@ -2,7 +2,7 @@
 Authors: Ilian Herzi, Rohan Sinha
 ## CS 170 project api definition
 ### Problem Representation
-problem_instance = {"G":graph, "homes":list_of_homes, "s":starting_node}
+problem_instance = {"G":graph, "homes":list_of_homes, "s":starting_node, "location_names":list_of_location_names}
 where: 
  - graph = networkx graph
  - homes = list of ints
