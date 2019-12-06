@@ -1,10 +1,10 @@
 import sys, os
 import networkx as nx
 import numpy as np
-import utils
+import annealed_penguins.utils as utils
 
 def input_to_graph(input_file):
-	data = read_file(input_file)
+	data = utils.read_file(input_file)
 	n_locations = int(data[0][0])
 	n_homes = int(data[1][0])
 	location_names = data[2]
@@ -17,9 +17,10 @@ def input_to_graph(input_file):
 
 	graph = nx.from_numpy_matrix(adjacency)
 	location_names_array = np.array(location_names, dtype=str)
-	homes = [np.argwhere(arr_names == home)[0][0] for home in home_names]
+	s = np.argwhere(location_names_array == starting_location)[0][0]
+	homes = [np.argwhere(location_names_array == home)[0][0] for home in home_names]
 
-	problem = {"G":graph, "homes":homes, "s":starting_location, "location_names": location_names}
+	problem = {"G":graph, "homes":homes, "s":s, "location_names": location_names}
 	return problem
 
 def graph_to_output(problem, solution, output_file):
