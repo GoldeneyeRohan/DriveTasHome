@@ -17,12 +17,20 @@ def input_to_graph(input_file):
 
 	graph = nx.from_numpy_matrix(adjacency)
 	
-	instance = {"G":graph, "locations":location_names,
-	 "home_names":home_names, "start":starting_location}
-	return instance
+	# instance = {"G":graph, "locations":location_names,
+	#  "home_names":home_names, "start":starting_location}
+
+	
+
+	return problem
+
+def graph_to_output(problem, solution, output_file):
+	"""
+	problem is defined in spec
+	solution is defined in spec
+	output file is string name of output
+	"""
+
+	return None
 
 
-	problem_instance = {"G":graph, "homes":list_of_homes, "s":starting_node}
-	graph = networkx graph, homes= list of ints, starting node = int
-
-	solution_instance = {"path":path_of_taxi, "dropoffs":list_of_dropoff}
