@@ -16,12 +16,10 @@ def input_to_graph(input_file):
 	adjacency = adjacency.astype(float)
 
 	graph = nx.from_numpy_matrix(adjacency)
-	
-	# instance = {"G":graph, "locations":location_names,
-	#  "home_names":home_names, "start":starting_location}
+	location_names_array = np.array(location_names, dtype=str)
+	homes = [np.argwhere(arr_names == home)[0][0] for home in home_names]
 
-	
-
+	problem = {"G":graph, "homes":homes, "s":starting_location, "location_names": location_names}
 	return problem
 
 def graph_to_output(problem, solution, output_file):
