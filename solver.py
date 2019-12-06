@@ -3,16 +3,18 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 import argparse
-import utils
 
-from student_utils import *
+import annealed_penguins.utils as utils
+import annealed_penguins.problem_parser as prob_parser
+import annealed_penguins.annealing as annealing
+from annealed_penguins.student_utils import *
 """
 ======================================================================
   Complete the following function.
 ======================================================================
 """
 
-def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
+def solve(problem, params=[]):
     """
     Write your algorithm here.
     Input:
@@ -25,7 +27,15 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         A dictionary mapping drop-off location to a list of homes of TAs that got off at that particular location
         NOTE: both outputs should be in terms of indices not the names of the locations themselves
     """
-    pass
+    G = problem["G"]
+    homes = problem["homes"]
+    start = problem["s"]
+    init_path = annealing.inital_candidate(G, homes, start)
+    D = nx.floyd_warshall_numpy(G)
+    solution, final_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=10000, epochs=10);
+    print("init cost:", init_cost, "final_cost:", final_cost)
+    trajectory = annealing.solution_to_trajectory(solution, G)
+    return trajectory
 
 """
 ======================================================================
@@ -36,17 +46,14 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
 def solve_from_file(input_file, output_directory, params=[]):
     print('Processing', input_file)
-
-    input_data = utils.read_file(input_file)
-    num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)
-    car_path, drop_offs = solve(list_locations, list_houses, starting_car_location, adjacency_matrix, params=params)
+    problem = prob_parser.input_to_graph(input_file)
+    solution = solve(problem, params=params)
 
     basename, filename = os.path.split(input_file)
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
     output_file = utils.input_to_output(input_file, output_directory)
-
-    convertToFile(car_path, drop_offs, output_file, list_locations)
+    prob_parser.graph_to_output(problem, solution, output_file)
 
 
 def solve_all(input_directory, output_directory, params=[]):
