@@ -54,6 +54,9 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
   best_solution = [v.copy() for v in inital_candidate]
   best_solution_cost = cost(*inital_candidate, homes, D)
   initial_cost = best_solution_cost
+  # the best solution we had so far
+  all_time_best_solution = [v.copy() for v in inital_candidate]
+  all_time_best_cost = best_solution_cost
   while (t > 0):
     for epoch in range(epochs):
       candidate = propose_candidate(G, best_solution)
@@ -63,17 +66,19 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
         # move to candidate state
         best_solution = candidate
         best_solution_cost = candidate_cost
+        all_time_best_solution = [v.copy() for v in candidate]
+        all_time_best_cost = best_solution_cost
       elif (np.e ** (cost_change / t) > np.random.uniform()):
         # move to candidate state
         best_solution = candidate
         best_solution_cost = candidate_cost
     t -= 1
 
-  if initial_cost < best_solution_cost:
-  	best_solution = inital_candidate
-  	best_solution_cost = initial_cost
+  # if initial_cost < best_solution_cost:
+  # 	best_solution = inital_candidate
+  # 	best_solution_cost = initial_cost
 
-  return best_solution, best_solution_cost, initial_cost
+  return all_time_best_solution, all_time_best_cost, initial_cost
 
 def solution_to_trajectory(solution, G):
 	shortest_paths_dict = dict(nx.all_pairs_shortest_path(G, cutoff=None))
