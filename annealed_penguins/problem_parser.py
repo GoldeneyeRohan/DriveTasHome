@@ -34,11 +34,11 @@ def graph_to_output(problem, solution, output_file):
 	solution is defined in spec
 	output file is string name of output
 	"""
-	homes = np.array(problem["homes"])
+	# homes = np.array(problem["homes"])
 	dropoffs = solution["dropoffs"]
-	dropoff_locations = set(dropoffs)
-	dropoff_mapping = {loc : homes[dropoffs == loc] for loc in dropoff_locations}
-	convertToFile(solution["path"], dropoff_mapping, output_file, problem["location_names"])
+	# dropoff_locations = set(dropoffs)
+	# dropoff_mapping = {loc : homes[dropoffs == loc] for loc in dropoff_locations}
+	convertToFile(solution["path"], dropoffs, output_file, problem["location_names"])
 
 
 
