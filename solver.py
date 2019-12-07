@@ -38,8 +38,12 @@ def solve(problem, params=[]):
 
     init_path = annealing.inital_candidate(G, homes, start)
     D = nx.floyd_warshall_numpy(G)
-    solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=T_map[key], epochs=10);
-    solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=100, epochs=10, propose_candidate=annealing.propose_candidate_neighbor)
+    for i in range(3):
+        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=T_map[key], epochs=10, propose_candidate=annealing.propose_candidate_order);
+        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=T_map[key], epochs=10, propose_candidate=annealing.propose_candidate_neighbor)
+    for i in range(3):
+        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=i * 100, epochs=10, propose_candidate=annealing.propose_candidate_order);
+        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=i * 100, epochs=10, propose_candidate=annealing.propose_candidate_neighbor)
     print("init cost:", init_cost, "intermediate_cost:", intermediate_cost, "final_cost", final_cost)
     trajectory = annealing.solution_to_trajectory(solution, G)
     return trajectory

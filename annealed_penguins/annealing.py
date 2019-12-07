@@ -65,7 +65,14 @@ def propose_candidate_neighbor(G, best_solution):
   path[i] = nbr
   return [dropoff_dict, path]
 
-def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=10, propose_candidate=propose_candidate_order):
+
+def propose_candidate(G, best_solution):
+    if(np.random.binomial(1, p=.1)):
+        return propose_candidate_order(G, best_solution)
+    else:
+        return propose_candidate_neighbor(G, best_solution)
+
+def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=10, propose_candidate=propose_candidate):
   t = T
   best_solution = [v.copy() for v in inital_candidate]
   best_solution_cost = cost(*inital_candidate, homes, D)
