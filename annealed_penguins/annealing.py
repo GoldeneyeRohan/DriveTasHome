@@ -32,6 +32,11 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
         best_solution = candidate
         best_solution_cost = candidate_cost
     t -= 1
+
+  if initial_cost < best_solution_cost:
+  	best_solution = inital_candidate
+  	best_solution_cost = initial_cost
+
   return best_solution, best_solution_cost, initial_cost
 
 
