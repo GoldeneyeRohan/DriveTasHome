@@ -21,13 +21,13 @@ def propose_candidate_order(G, best_solution):
 
   reversed_section = list(reversed(dropoff[i:i+length]))
 
-  dropoff = (dropoff[:i] +  
-          reversed_section + 
+  dropoff = (dropoff[:i] +
+          reversed_section +
           dropoff[i + length:]
           )
 
   new_path = []
-  for i in range(0, len(dropoff)-1): 
+  for i in range(0, len(dropoff)-1):
     if dropoff[i] != dropoff[i + 1]:
       new_path += [dropoff[i]]
   new_path += [dropoff[-1]]
@@ -51,7 +51,7 @@ def propose_candidate_neighbor(G, best_solution):
 
 def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=10, propose_candidate=propose_candidate_order):
   t = T
-  best_solution = inital_candidate
+  best_solution = [v.copy() for v in inital_candidate]
   best_solution_cost = cost(*inital_candidate, homes, D)
   initial_cost = best_solution_cost
   while (t > 0):
@@ -80,7 +80,7 @@ def solution_to_trajectory(solution, G):
 	dropoff_dict = solution[0]
 	path = solution[1]
 	#pdb.set_trace()
-	trajectory_path = [] 
+	trajectory_path = []
 	for i in range(len(path) - 1):
 		trajectory_path += shortest_paths_dict[path[i]][path[i + 1]][:-1]
 	trajectory_path += [path[-1]]
