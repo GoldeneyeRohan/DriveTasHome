@@ -30,18 +30,19 @@ def solve(problem, params=[]):
     G = problem["G"]
     homes = problem["homes"]
     start = problem["s"]
+    T_map = {50:100,100:500,200:1500}
+    L = len(problem["location_names"])
+    ts = np.array(list(T_map.keys()))
+    key = ts[np.where(ts >= L)[0][0]]
+
+
     init_path = annealing.inital_candidate(G, homes, start)
     D = nx.floyd_warshall_numpy(G)
-    solution, final_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=10000, epochs=10);
+    solution, final_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=T_map[key], epochs=10);
     print("init cost:", init_cost, "final_cost:", final_cost)
     trajectory = annealing.solution_to_trajectory(solution, G)
     return trajectory
 
-"""
-======================================================================
-   No need to change any code below this line
-======================================================================
-"""
 
 
 def solve_from_file(input_file, output_directory, params=[]):
