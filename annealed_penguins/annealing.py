@@ -3,6 +3,22 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import pdb
 
+def _deep_copy(a):
+    if type(a) == dict:
+        d = {}
+        for k, v in a.items():
+            d[k] = _deep_copy(v)
+        return d
+    elif type(a) == list:
+        lst = []
+        for v in a:
+            lst += [_deep_copy(v)]
+        return lst
+    else:
+        return a
+
+
+
 def inital_candidate(G, homes, starting_node):
   s = starting_node
   init_path = [starting_node] + homes + [starting_node]
@@ -66,12 +82,13 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
         # move to candidate state
         best_solution = candidate
         best_solution_cost = candidate_cost
-        all_time_best_solution = [v.copy() for v in candidate]
-        all_time_best_cost = best_solution_cost
       elif (np.e ** (cost_change / t) > np.random.uniform()):
         # move to candidate state
         best_solution = candidate
         best_solution_cost = candidate_cost
+      if all_time_best_cost > candidate_cost:
+          all_time_best_solution = [v.copy() for v in candidate]
+          all_time_best_cost = best_solution_cost
     t -= 1
 
   # if initial_cost < best_solution_cost:
