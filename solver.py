@@ -30,7 +30,7 @@ def solve(problem, params=[]):
     G = problem["G"]
     homes = problem["homes"]
     start = problem["s"]
-    T_map = {50:100,100:500,200:1500}
+    T_map = {50:1000,1000:5000,2000:15000}
     L = len(problem["location_names"])
     ts = np.array(list(T_map.keys()))
     key = ts[np.where(ts >= L)[0][0]]
@@ -39,11 +39,11 @@ def solve(problem, params=[]):
     init_path = annealing.inital_candidate(G, homes, start)
     D = nx.floyd_warshall_numpy(G)
     for i in range(3):
-        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=T_map[key], epochs=10, propose_candidate=annealing.propose_candidate_order);
-        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=T_map[key], epochs=10, propose_candidate=annealing.propose_candidate_neighbor)
+        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=T_map[key], epochs=100, propose_candidate=annealing.propose_candidate_order);
+        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=T_map[key], epochs=100, propose_candidate=annealing.propose_candidate_neighbor)
     for i in range(3):
-        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=i * 100, epochs=10, propose_candidate=annealing.propose_candidate_order);
-        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=i * 100, epochs=10, propose_candidate=annealing.propose_candidate_neighbor)
+        solution, intermediate_cost, init_cost = annealing.simulated_annealing(G, homes, start, init_path, D, T=i * 100, epochs=100, propose_candidate=annealing.propose_candidate_order);
+        solution, final_cost, intermediate_cost_dummy = annealing.simulated_annealing(G, homes, start, solution, D, T=i * 100, epochs=100, propose_candidate=annealing.propose_candidate_neighbor)
     print("init cost:", init_cost, "intermediate_cost:", intermediate_cost, "final_cost", final_cost)
     trajectory = annealing.solution_to_trajectory(solution, G)
     return trajectory
