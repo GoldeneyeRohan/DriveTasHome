@@ -58,7 +58,6 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
     for epoch in range(epochs):
       candidate = propose_candidate(G, best_solution)
       candidate_cost = cost(*candidate, homes, D)
-      print(candidate_cost)
       cost_change = best_solution_cost - candidate_cost # we want to accept lower cost
       if (cost_change > 0):
         # move to candidate state
@@ -70,9 +69,9 @@ def simulated_annealing(G, homes, start, inital_candidate, D, T=100000, epochs=1
         best_solution_cost = candidate_cost
     t -= 1
 
-  # if initial_cost < best_solution_cost:
-  # 	best_solution = inital_candidate
-  # 	best_solution_cost = initial_cost
+  if initial_cost < best_solution_cost:
+  	best_solution = inital_candidate
+  	best_solution_cost = initial_cost
 
   return best_solution, best_solution_cost, initial_cost
 
